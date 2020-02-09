@@ -9,5 +9,4 @@ public class MeterReadingsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MeterReadingsApplication.class, args);
 	}
-
 }
