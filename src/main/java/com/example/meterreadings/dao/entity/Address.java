@@ -8,14 +8,14 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @Entity
 @Table(name = "ADDRESS")
+@EqualsAndHashCode
 public class Address {
 
     @Id
     @Column(name = "id", unique = true)
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "street_name")
     private String streetName;

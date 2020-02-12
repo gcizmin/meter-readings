@@ -1,10 +1,27 @@
 package com.example.meterreadings.service;
 
+import com.example.meterreadings.error.CannotAddMeterReadingException;
+import com.example.meterreadings.error.MeterReadingNotFoundException;
+import com.example.meterreadings.request.AddMonthlyMeterReadingRequest;
+import com.example.meterreadings.request.MonthlyMeterReadingRequest;
+import com.example.meterreadings.request.TotalYearlyMeterReadingRequest;
+import com.example.meterreadings.request.YearlyMeterReadingsRequest;
+import com.example.meterreadings.response.AddMonthlyMeterReadingResponse;
+import com.example.meterreadings.response.MonthlyMeterReadingResponse;
+import com.example.meterreadings.response.TotalYearlyMeterReadingResponse;
+import com.example.meterreadings.response.YearlyMeterReadingsResponse;
+
 public interface MeterReadingsService {
 
-    String getTotalReadingForYear(String serialNumber, int year);
+    TotalYearlyMeterReadingResponse getTotalReadingForYear(TotalYearlyMeterReadingRequest request)
+            throws MeterReadingNotFoundException;
 
-    String getReadingsForYear(String serialNumber, int year);
+    YearlyMeterReadingsResponse getReadingsForYear(YearlyMeterReadingsRequest request)
+            throws MeterReadingNotFoundException;
 
-    String getReadingForYearAndMonth(String serialNumber, int year, int month);
+    MonthlyMeterReadingResponse getReadingForMonth(MonthlyMeterReadingRequest request)
+            throws MeterReadingNotFoundException;
+
+    AddMonthlyMeterReadingResponse addMonthlyReading(AddMonthlyMeterReadingRequest request)
+            throws CannotAddMeterReadingException;
 }

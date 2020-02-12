@@ -34,4 +34,35 @@ public class MeterReadingRepositoryIntegrationTest {
         // then
         assertThat(found.stream().allMatch(reading -> reading.getYear() == year), is(true));
     }
+
+    @Test
+    public void whenFindByYearAndSerialNumber_thenReturnAllMeterReadings() {
+        // given
+        int year = 2019;
+        String serialNumber = "327p61";
+
+        // when
+        List<MeterReading> found = meterReadingRepository.findByYearAndMeterSerialNumber(year, serialNumber);
+
+        // then
+        assertThat(found.stream().allMatch(reading -> reading.getYear() == year &&
+                serialNumber.equals(reading.getMeter().getSerialNumber())), is(true));
+
+        assertThat(found.size(),  is(2));
+    }
+
+    @Test
+    public void whenFindByMonthAndYearAndSerialNumber_thenReturnAllMeterReadings() {
+        // given
+        int month = 11;
+        int year = 2019;
+        String serialNumber = "327p61";
+
+        // when
+        MeterReading found = meterReadingRepository.findByMonthAndYearAndMeterSerialNumber(month, year, serialNumber);
+
+        // then
+        assertThat(found.getMonth() == month && found.getYear() == year &&
+                serialNumber.equals(found.getMeter().getSerialNumber()), is(true));
+    }
 }

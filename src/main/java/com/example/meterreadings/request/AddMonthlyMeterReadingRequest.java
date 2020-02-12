@@ -1,14 +1,13 @@
-package com.example.meterreadings.domain.dto;
+package com.example.meterreadings.request;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Builder
 @Getter
-public class MeterReadingDTO {
+public class AddMonthlyMeterReadingRequest {
     private String serialNumber;
-    private String month;
     private int year;
+    private int month;
     private int reading;
 }

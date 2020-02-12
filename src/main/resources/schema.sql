@@ -14,14 +14,14 @@ CREATE TABLE ADDRESS (
   street_name VARCHAR(250) NOT NULL,
   street_number VARCHAR(250) NOT NULL,
   city VARCHAR(250) NOT NULL,
-  CONSTRAINT UC_Address UNIQUE (street_name, street_number, city)
+  CONSTRAINT UC_ADDRESS UNIQUE (street_name, street_number, city)
 );
 
 DROP TABLE IF EXISTS METER;
 
 CREATE TABLE METER (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  serial_number VARCHAR(250) NOT NULL UNIQUE
+  serial_number VARCHAR(32) NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS METER_READING;
@@ -31,6 +31,7 @@ CREATE TABLE METER_READING (
   meter_id INT NOT NULL,
   month VARCHAR(2) NOT NULL,
   year VARCHAR(4) NOT NULL,
-  reading INT NOT NULL
+  reading INT NOT NULL,
+  CONSTRAINT UC_METER_READING UNIQUE (meter_id, month, year)
 );
 

@@ -1,5 +1,7 @@
 package com.example.meterreadings.dao.entity;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,11 +12,12 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "METER")
+@EqualsAndHashCode
 public class Meter {
 
     @Id
     @Column(name = "id", unique = true)
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "serial_number", unique = true)
     private String serialNumber;

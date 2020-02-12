@@ -26,20 +26,20 @@ INSERT INTO CLIENT (id, name, address_id, meter_id)
     VALUES (4, 'Intertrade', 4, 4);
 
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (1, 1, 10, 2019, 111);
+    VALUES (1, 1, 11, 2019, 111);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (2, 1, 11, 2019, 222);
+    VALUES (2, 1, 12, 2019, 222);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (3, 1, 0, 2020, 444);
+    VALUES (3, 1, 1, 2020, 444);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (4, 2, 10, 2019, 111);
+    VALUES (4, 2, 11, 2019, 111);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (5, 2, 11, 2019, 222);
+    VALUES (5, 2, 12, 2019, 222);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (6, 3, 11, 2019, 111);
+    VALUES (6, 3, 12, 2019, 111);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (7, 3, 0, 2020, 222);
+    VALUES (7, 3, 1, 2020, 222);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (8, 3, 1, 2020, 444);
+    VALUES (8, 3, 2, 2020, 444);
 INSERT INTO METER_READING (id, meter_id, month, year, reading)
-    VALUES (9, 4, 11, 2019, 111);
+    VALUES (9, 4, 12, 2019, 111);

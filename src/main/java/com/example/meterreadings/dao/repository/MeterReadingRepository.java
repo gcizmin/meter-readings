@@ -10,4 +10,8 @@ import java.util.List;
 public interface MeterReadingRepository extends JpaRepository<MeterReading, Long> {
 
     List<MeterReading> findByYear(int year);
+
+    List<MeterReading> findByYearAndMeterSerialNumber(int year, String serialNumber);
+
+    MeterReading findByMonthAndYearAndMeterSerialNumber(int month, int year, String serialNumber);
 }

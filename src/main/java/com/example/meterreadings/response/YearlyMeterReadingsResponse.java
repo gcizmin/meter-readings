@@ -1,6 +1,7 @@
-package com.example.meterreadings.domain.dto;
+package com.example.meterreadings.response;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.Month;
@@ -8,7 +9,8 @@ import java.util.Map;
 
 @Builder
 @Getter
-public class YearlyMeterReadingsDTO {
+@EqualsAndHashCode
+public class YearlyMeterReadingsResponse {
     private String serialNumber;
     private int year;
     private Map<Month, Integer> readings;

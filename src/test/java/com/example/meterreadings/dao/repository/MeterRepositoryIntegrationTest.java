@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -48,10 +49,10 @@ public class MeterRepositoryIntegrationTest {
         int reading = 222;
 
         // when
-        int found = meterRepository.findReadingBySerialNumberAndYearAndMonth(serialNumber, year, month);
+        Optional<Integer> found = meterRepository.findReadingBySerialNumberAndYearAndMonth(serialNumber, year, month);
 
         // then
-        assertThat(found, is(reading));
+        assertThat(found.get(), is(reading));
     }
 
     @Test
@@ -64,10 +65,10 @@ public class MeterRepositoryIntegrationTest {
         int totalReading = 333;
 
         // when
-        int found = meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year);
+        Optional<Integer> found = meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year);
 
         // then
-        assertThat(found, is(totalReading));
+        assertThat(found.get(), is(totalReading));
     }
 
     @Test
