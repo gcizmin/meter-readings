@@ -21,25 +21,25 @@ public class MeterReadingsController {
     private final MeterReadingsService meterReadingsService;
 
     @GetMapping(value = "/total/serial_number/{serial_number}/year/{year}")
-    public TotalYearlyMeterReadingResponse getTotalReadingForYear(@PathVariable("serial_number") String serialNumber,
-                                                 @PathVariable("year") int year) {
+    public TotalYearlyMeterReadingResponse getTotalYearlyReading(@PathVariable("serial_number") String serialNumber,
+                                                                 @PathVariable("year") int year) {
         RestArgumentChecker.checkYear(year);
         return meterReadingsService.getTotalYearlyReading(
                 TotalYearlyMeterReadingRequest.builder().serialNumber(serialNumber).year(year).build());
     }
 
     @GetMapping(value = "/yearly_readings/serial_number/{serial_number}/year/{year}")
-    public YearlyMeterReadingsResponse getReadingsForYear(@PathVariable("serial_number") String serialNumber,
-                                                          @PathVariable("year") int year) {
+    public YearlyMeterReadingsResponse getYearlyReadings(@PathVariable("serial_number") String serialNumber,
+                                                         @PathVariable("year") int year) {
         RestArgumentChecker.checkYear(year);
         return meterReadingsService.getYearlyReadings(YearlyMeterReadingsRequest
                 .builder().serialNumber(serialNumber).year(year).build());
     }
 
     @GetMapping(value = "/reading/serial_number/{serial_number}/year/{year}/month/{month}")
-    public MonthlyMeterReadingResponse getReadingForYearAndMonth(@PathVariable("serial_number") String serialNumber,
-                                                                 @PathVariable("year") int year,
-                                                                 @PathVariable("month") int month) {
+    public MonthlyMeterReadingResponse getMonthlyReading(@PathVariable("serial_number") String serialNumber,
+                                                         @PathVariable("year") int year,
+                                                         @PathVariable("month") int month) {
         RestArgumentChecker.checkYear(year);
         RestArgumentChecker.checkMonth(month);
         return meterReadingsService.getMonthlyReading(MonthlyMeterReadingRequest

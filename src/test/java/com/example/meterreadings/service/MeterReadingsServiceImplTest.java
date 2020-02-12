@@ -38,7 +38,7 @@ public class MeterReadingsServiceImplTest {
     private MeterReadingRepository meterReadingRepository;
 
     @InjectMocks
-    private MeterReadingServiceImpl meterReadingsService;
+    private MeterReadingsServiceImpl meterReadingsService;
 
     @Test
     public void whenGetTotalYearlyReading_thenReturnTotalYearlyMeterReadingResponse() {
@@ -52,7 +52,6 @@ public class MeterReadingsServiceImplTest {
                 .year(year).totalReading(totalReading.get()).build();
 
         when(meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year)).thenReturn(totalReading);
-
         assertThat(meterReadingsService.getTotalYearlyReading(request), is(response));
     }
 
@@ -68,7 +67,7 @@ public class MeterReadingsServiceImplTest {
         when(meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year)).thenReturn(Optional.empty());
 
          Exception exception = assertThrows(MeterReadingNotFoundException.class,
-                () -> {meterReadingsService.getTotalYearlyReading(request);});
+                () -> meterReadingsService.getTotalYearlyReading(request));
 
         String expectedMessage = "No meter readings for meter serial number [327p61] and year [2019]!";
         String actualMessage = exception.getMessage();
@@ -108,7 +107,7 @@ public class MeterReadingsServiceImplTest {
         when(meterRepository.findReadingsBySerialNumberAndYear(serialNumber, year)).thenReturn(new ArrayList<>());
 
         Exception exception = assertThrows(MeterReadingNotFoundException.class,
-                () -> {meterReadingsService.getYearlyReadings(request);});
+                () -> meterReadingsService.getYearlyReadings(request));
 
         String expectedMessage = "No meter readings for meter serial number [327p61] and year [2019]!";
         String actualMessage = exception.getMessage();
@@ -145,7 +144,7 @@ public class MeterReadingsServiceImplTest {
         when(meterRepository.findReadingBySerialNumberAndYearAndMonth(serialNumber, year, month)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(MeterReadingNotFoundException.class,
-                () -> {meterReadingsService.getMonthlyReading(request);});
+                () -> meterReadingsService.getMonthlyReading(request));
 
         String expectedMessage = "No meter readings for meter serial number [327p61] and month [11/2019]!";
         String actualMessage = exception.getMessage();
@@ -190,7 +189,7 @@ public class MeterReadingsServiceImplTest {
         when(meterRepository.findBySerialNumber(serialNumber)).thenReturn(null);
 
         Exception exception = assertThrows(CannotAddMeterReadingException.class,
-                () -> {meterReadingsService.addMonthlyReading(request);});
+                () -> meterReadingsService.addMonthlyReading(request));
 
         String expectedMessage = "Meter with that serial number does not exist";
         String actualMessage = exception.getMessage();
@@ -214,7 +213,7 @@ public class MeterReadingsServiceImplTest {
         when(meterRepository.findBySerialNumber(serialNumber)).thenReturn(populateMeter(2L, serialNumber, meterReadings));
 
         Exception exception = assertThrows(CannotAddMeterReadingException.class,
-                () -> {meterReadingsService.addMonthlyReading(request);});
+                () -> meterReadingsService.addMonthlyReading(request));
 
         String expectedMessage = "Reading for that month already exists";
         String actualMessage = exception.getMessage();
