@@ -31,6 +31,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MeterReadingsServiceImplTest {
 
+    private static final String SERIAL_NUMBER_327p61 = "327p61";
+    private static final int YEAR_2019 = 2019;
+    private static final int MONTH_11 = 11;
+    private static final int MONTH_10 = 10;
+    private static final int READING_333 = 333;
+    private static final int READING_222 = 222;
+    private static final int READING_111 = 111;
+
     @Mock
     private MeterRepository meterRepository;
 
@@ -42,181 +50,129 @@ public class MeterReadingsServiceImplTest {
 
     @Test
     public void whenGetTotalYearlyReading_thenReturnTotalYearlyMeterReadingResponse() {
-        // given
-        String serialNumber = "327p61";
-        int year = 2019;
-        Optional<Integer> totalReading = Optional.of(333);
-        TotalYearlyMeterReadingRequest request = TotalYearlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .year(year).build();
-        TotalYearlyMeterReadingResponse response = TotalYearlyMeterReadingResponse.builder().serialNumber(serialNumber)
-                .year(year).totalReading(totalReading.get()).build();
+        TotalYearlyMeterReadingRequest request = TotalYearlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).build();
+        TotalYearlyMeterReadingResponse response = TotalYearlyMeterReadingResponse.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).totalReading(READING_333).build();
 
-        when(meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year)).thenReturn(totalReading);
+        when(meterRepository.findTotalReadingBySerialNumberAndYear(SERIAL_NUMBER_327p61, YEAR_2019)).thenReturn(Optional.of(READING_333));
+
         assertThat(meterReadingsService.getTotalYearlyReading(request), is(response));
     }
 
     @Test
     public void whenGetTotalYearlyReading_thenReturnMeterReadingNotFoundException() {
-        // given
-        String serialNumber = "327p61";
-        int year = 2019;
+        TotalYearlyMeterReadingRequest request = TotalYearlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).build();
+        String expectedMessage = String.format(
+                "No meter readings for meter serial number [%s] and year [%d]!", SERIAL_NUMBER_327p61, YEAR_2019);
 
-        TotalYearlyMeterReadingRequest request = TotalYearlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .year(year).build();
-
-        when(meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year)).thenReturn(Optional.empty());
-
-         Exception exception = assertThrows(MeterReadingNotFoundException.class,
-                () -> meterReadingsService.getTotalYearlyReading(request));
-
-        String expectedMessage = "No meter readings for meter serial number [327p61] and year [2019]!";
-        String actualMessage = exception.getMessage();
+        when(meterRepository.findTotalReadingBySerialNumberAndYear(SERIAL_NUMBER_327p61, YEAR_2019)).thenReturn(Optional.empty());
+        String actualMessage = assertThrows(MeterReadingNotFoundException.class,
+                () -> meterReadingsService.getTotalYearlyReading(request)).getMessage();
 
         assertThat(actualMessage.equals(expectedMessage), is(true));
     }
 
     @Test
     public void whenGetYearlyReadings_thenReturnYearlyMeterReadingsResponse() {
-        // given
-        String serialNumber = "327p61";
-        int year = 2019;
-        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(serialNumber, year);
+        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(SERIAL_NUMBER_327p61, YEAR_2019);
         Map<Month, Integer> readings = new HashMap<>() {{
-            put(Month.NOVEMBER, 111);
-            put(Month.DECEMBER, 222);
+            put(Month.NOVEMBER, READING_111);
+            put(Month.DECEMBER, READING_222);
         }};
-        YearlyMeterReadingsRequest request = YearlyMeterReadingsRequest.builder().serialNumber(serialNumber)
-                .year(year).build();
-        YearlyMeterReadingsResponse response = YearlyMeterReadingsResponse.builder().serialNumber(serialNumber)
-                .year(year).readings(readings).build();
+        YearlyMeterReadingsRequest request = YearlyMeterReadingsRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).build();
+        YearlyMeterReadingsResponse response = YearlyMeterReadingsResponse.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).readings(readings).build();
 
-        when(meterRepository.findReadingsBySerialNumberAndYear(serialNumber, year)).thenReturn(meterReadings);
+        when(meterRepository.findReadingsBySerialNumberAndYear(SERIAL_NUMBER_327p61, YEAR_2019)).thenReturn(meterReadings);
 
         assertThat(meterReadingsService.getYearlyReadings(request), is(response));
     }
 
     @Test
     public void whenGetYearlyReadings_thenReturnMeterReadingNotFoundException() {
-        // given
-        String serialNumber = "327p61";
-        int year = 2019;
+        YearlyMeterReadingsRequest request = YearlyMeterReadingsRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).build();
+        String expectedMessage = String.format(
+                "No meter readings for meter serial number [%s] and year [%d]!", SERIAL_NUMBER_327p61, YEAR_2019);
 
-        YearlyMeterReadingsRequest request = YearlyMeterReadingsRequest.builder().serialNumber(serialNumber)
-                .year(year).build();
-
-        when(meterRepository.findReadingsBySerialNumberAndYear(serialNumber, year)).thenReturn(new ArrayList<>());
-
-        Exception exception = assertThrows(MeterReadingNotFoundException.class,
-                () -> meterReadingsService.getYearlyReadings(request));
-
-        String expectedMessage = "No meter readings for meter serial number [327p61] and year [2019]!";
-        String actualMessage = exception.getMessage();
+        when(meterRepository.findReadingsBySerialNumberAndYear(SERIAL_NUMBER_327p61, YEAR_2019))
+                .thenReturn(new ArrayList<>());
+        String actualMessage = assertThrows(MeterReadingNotFoundException.class,
+                () -> meterReadingsService.getYearlyReadings(request)).getMessage();
 
         assertThat(actualMessage.equals(expectedMessage), is(true));
     }
 
     @Test
     public void whenGetMonthlyReading_thenReturnMonthlyMeterReadingResponse() {
-        // given
-        String serialNumber = "327p61";
-        int year = 2019;
-        int month = 11;
-        Optional<Integer> reading = Optional.of(222);
-        MonthlyMeterReadingRequest request = MonthlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .year(year).month(month).build();
-        MonthlyMeterReadingResponse response = MonthlyMeterReadingResponse.builder().serialNumber(serialNumber)
-                .month(Month.of(month)).year(year).reading(reading.get()).build();
+        Optional<Integer> reading = Optional.of(READING_222);
+        MonthlyMeterReadingRequest request = MonthlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).month(MONTH_11).build();
+        MonthlyMeterReadingResponse response = MonthlyMeterReadingResponse.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .month(Month.of(MONTH_11)).year(YEAR_2019).reading(reading.get()).build();
 
-        when(meterRepository.findReadingBySerialNumberAndYearAndMonth(serialNumber, year, month)).thenReturn(reading);
+        when(meterRepository.findReadingBySerialNumberAndYearAndMonth(SERIAL_NUMBER_327p61, YEAR_2019, MONTH_11)).thenReturn(reading);
 
         assertThat(meterReadingsService.getMonthlyReading(request), is(response));
     }
 
     @Test
     public void whenGetMonthlyReading_thenReturnMeterReadingNotFoundException() {
-        // given
-        String serialNumber = "327p61";
-        int year = 2019;
-        int month = 11;
-        MonthlyMeterReadingRequest request = MonthlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .year(year).month(month).build();
+        MonthlyMeterReadingRequest request = MonthlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .year(YEAR_2019).month(MONTH_11).build();
+        String expectedMessage = String.format(
+                "No meter readings for meter serial number [%s] and month [%d/%d]!",
+                SERIAL_NUMBER_327p61, MONTH_11, YEAR_2019);
 
-        when(meterRepository.findReadingBySerialNumberAndYearAndMonth(serialNumber, year, month)).thenReturn(Optional.empty());
-
-        Exception exception = assertThrows(MeterReadingNotFoundException.class,
-                () -> meterReadingsService.getMonthlyReading(request));
-
-        String expectedMessage = "No meter readings for meter serial number [327p61] and month [11/2019]!";
-        String actualMessage = exception.getMessage();
+        when(meterRepository.findReadingBySerialNumberAndYearAndMonth(SERIAL_NUMBER_327p61, YEAR_2019, MONTH_11)).thenReturn(Optional.empty());
+        String actualMessage = assertThrows(MeterReadingNotFoundException.class,
+                () -> meterReadingsService.getMonthlyReading(request)).getMessage();
 
         assertThat(actualMessage.equals(expectedMessage), is(true));
     }
 
     @Test
     public void whenAddMonthlyReading_thenReturnAddMonthlyMeterReadingResponse() {
-        // given
-        String serialNumber = "327p61";
-        int month = 10;
-        int year = 2019;
-        int reading = 333;
+        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(SERIAL_NUMBER_327p61, YEAR_2019);
+        AddMonthlyMeterReadingRequest request = AddMonthlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .month(MONTH_10).year(YEAR_2019).reading(READING_333).build();
+        AddMonthlyMeterReadingResponse response = AddMonthlyMeterReadingResponse.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .month(MONTH_10).year(YEAR_2019).reading(READING_333).statusMessage("Success").build();
 
-        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(serialNumber, year);
-
-        AddMonthlyMeterReadingRequest request = AddMonthlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .month(month).year(year).reading(reading).build();
-        AddMonthlyMeterReadingResponse response = AddMonthlyMeterReadingResponse.builder().serialNumber(serialNumber)
-                .month(month).year(year).reading(reading).statusMessage("Success").build();
-
-        when(meterRepository.findBySerialNumber(serialNumber))
-                .thenReturn(populateMeter(2L, serialNumber, meterReadings));
+        when(meterRepository.findBySerialNumber(SERIAL_NUMBER_327p61))
+                .thenReturn(populateMeter(2L, SERIAL_NUMBER_327p61, meterReadings));
 
         assertThat(meterReadingsService.addMonthlyReading(request), is(response));
     }
 
     @Test
     public void whenAddMonthlyReading_thenReturnCannotAddMeterReadingException() {
-        // given
-        String serialNumber = "327p61";
-        int month = 10;
-        int year = 2019;
-        int reading = 333;
-
-        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(serialNumber, year);
-
-        AddMonthlyMeterReadingRequest request = AddMonthlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .month(month).year(year).reading(reading).build();
-
-        when(meterRepository.findBySerialNumber(serialNumber)).thenReturn(null);
-
-        Exception exception = assertThrows(CannotAddMeterReadingException.class,
-                () -> meterReadingsService.addMonthlyReading(request));
-
+        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(SERIAL_NUMBER_327p61, YEAR_2019);
+        AddMonthlyMeterReadingRequest request = AddMonthlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .month(MONTH_10).year(YEAR_2019).reading(READING_333).build();
         String expectedMessage = "Meter with that serial number does not exist";
-        String actualMessage = exception.getMessage();
+
+        when(meterRepository.findBySerialNumber(SERIAL_NUMBER_327p61)).thenReturn(null);
+        String actualMessage = assertThrows(CannotAddMeterReadingException.class,
+                () -> meterReadingsService.addMonthlyReading(request)).getMessage();
 
         assertThat(actualMessage.contains(expectedMessage), is(true));
     }
 
     @Test
     public void whenAddMonthlyReading_thenReturnCannotAddMeterReadingException_DoubleMonth() {
-        // given
-        String serialNumber = "327p61";
-        int month = 11;
-        int year = 2019;
-        int reading = 111;
-
-        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(serialNumber, year);
-
-        AddMonthlyMeterReadingRequest request = AddMonthlyMeterReadingRequest.builder().serialNumber(serialNumber)
-                .month(month).year(year).reading(reading).build();
-
-        when(meterRepository.findBySerialNumber(serialNumber)).thenReturn(populateMeter(2L, serialNumber, meterReadings));
-
-        Exception exception = assertThrows(CannotAddMeterReadingException.class,
-                () -> meterReadingsService.addMonthlyReading(request));
-
+        List<MeterReading> meterReadings = getMeterReadingsWithAllValues(SERIAL_NUMBER_327p61, YEAR_2019);
+        AddMonthlyMeterReadingRequest request = AddMonthlyMeterReadingRequest.builder().serialNumber(SERIAL_NUMBER_327p61)
+                .month(MONTH_11).year(YEAR_2019).reading(READING_111).build();
+        Meter meter = populateMeter(2L, SERIAL_NUMBER_327p61, meterReadings);
         String expectedMessage = "Reading for that month already exists";
-        String actualMessage = exception.getMessage();
+
+        when(meterRepository.findBySerialNumber(SERIAL_NUMBER_327p61)).thenReturn(meter);
+        String actualMessage = assertThrows(CannotAddMeterReadingException.class,
+                () -> meterReadingsService.addMonthlyReading(request)).getMessage();
 
         assertThat(actualMessage.contains(expectedMessage), is(true));
     }

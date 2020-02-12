@@ -19,6 +19,13 @@ import static org.junit.Assert.assertThat;
 @DataJpaTest
 public class MeterRepositoryIntegrationTest {
 
+    private static final String SERIAL_NUMBER_327p61 = "327p61";
+    private static final int YEAR_2019 = 2019;
+    private static final int MONTH_12 = 12;
+    private static final int READING_222 = 222;
+    private static final int READING_333 = 333;
+
+
     @Autowired
     private TestEntityManager entityManager;
 
@@ -27,67 +34,30 @@ public class MeterRepositoryIntegrationTest {
 
     @Test
     public void whenFindBySerialNumber_thenReturnMeter() {
-        // given
-        String serialNumber = "327p61";
-
-        // when
-        Meter found = meterRepository.findBySerialNumber(serialNumber);
-
-        // then
-        assertThat(found.getSerialNumber(), is(serialNumber));
+        Meter found = meterRepository.findBySerialNumber(SERIAL_NUMBER_327p61);
+        assertThat(found.getSerialNumber(), is(SERIAL_NUMBER_327p61));
     }
 
     @Test
     public void whenFindReadingBySerialNumberAndYearAndMonth_thenReturnReading() {
-        // given
-        String serialNumber = "327p61";
-
-        int year = 2019;
-
-        int month = 12;
-
-        int reading = 222;
-
-        // when
-        Optional<Integer> found = meterRepository.findReadingBySerialNumberAndYearAndMonth(serialNumber, year, month);
-
-        // then
-        assertThat(found.get(), is(reading));
+        Optional<Integer> found = meterRepository.findReadingBySerialNumberAndYearAndMonth(
+                SERIAL_NUMBER_327p61, YEAR_2019, MONTH_12);
+        assertThat(found.get(), is(READING_222));
     }
 
     @Test
     public void whenFindTotalReadingBySerialNumberAndYear_thenReturnTotalReading() {
-        // given
-        String serialNumber = "327p61";
-
-        int year = 2019;
-
-        int totalReading = 333;
-
-        // when
-        Optional<Integer> found = meterRepository.findTotalReadingBySerialNumberAndYear(serialNumber, year);
-
-        // then
-        assertThat(found.get(), is(totalReading));
+        Optional<Integer> found = meterRepository.findTotalReadingBySerialNumberAndYear(
+                SERIAL_NUMBER_327p61, YEAR_2019);
+        assertThat(found.get(), is(READING_333));
     }
 
     @Test
     public void whenFindReadingsBySerialNumberAndYear_thenReturnMeterReadings() {
-        // given
-        String serialNumber = "327p61";
-
-        int year = 2019;
-
-        int listSize = 2;
-
-        // when
-        List<MeterReading> found = meterRepository.findReadingsBySerialNumberAndYear(serialNumber, year);
-
-        // then
-        assertThat(found.size(), is(listSize));
-
-        assertThat(found.stream().allMatch(
-                reading -> year == reading.getYear() && serialNumber.equals(reading.getMeter().getSerialNumber())),
+        List<MeterReading> found = meterRepository.findReadingsBySerialNumberAndYear(SERIAL_NUMBER_327p61, YEAR_2019);
+        assertThat(found.size(), is(2));
+        assertThat(found.stream().allMatch(reading -> YEAR_2019 == reading.getYear() &&
+                        SERIAL_NUMBER_327p61.equals(reading.getMeter().getSerialNumber())),
                 is(true));
     }
 }

@@ -15,6 +15,10 @@ import static org.junit.Assert.*;
 @DataJpaTest
 public class ClientRepositoryIntegrationTest {
 
+    private static final String CLIENT_NAME_INTERTRADE = "Intertrade";
+    private static final String CITY_VELIKO_KOLO = "Veliko Kolo";
+    private static final String SERIAL_NUMBER_274 = "274";
+
     @Autowired
     private TestEntityManager entityManager;
 
@@ -23,41 +27,19 @@ public class ClientRepositoryIntegrationTest {
 
     @Test
     public void whenFindByName_thenReturnClient() {
-        // given
-        String clientName = "Intertrade";
-
-        // when
-        Client found = clientRepository.findByName(clientName);
-
-        // then
-        assertThat(found.getName(), is(clientName));
+        Client found = clientRepository.findByName(CLIENT_NAME_INTERTRADE);
+        assertThat(found.getName(), is(CLIENT_NAME_INTERTRADE));
     }
 
     @Test
     public void whenFindByName_thenReturnClientAddressCity() {
-        // given
-        String clientName = "Intertrade";
-
-        String city = "Veliko Kolo";
-
-        // when
-        Client found = clientRepository.findByName(clientName);
-
-        // then
-        assertThat(found.getAddress().getCity(), is(city));
+        Client found = clientRepository.findByName(CLIENT_NAME_INTERTRADE);
+        assertThat(found.getAddress().getCity(), is(CITY_VELIKO_KOLO));
     }
 
     @Test
     public void whenFindByName_thenReturnClientMeterSerialNumber() {
-        // given
-        String clientName = "Intertrade";
-
-        String serialNumber = "274";
-
-        // when
-        Client found = clientRepository.findByName(clientName);
-
-        // then
-        assertThat(found.getMeter().getSerialNumber(), is(serialNumber));
+        Client found = clientRepository.findByName(CLIENT_NAME_INTERTRADE);
+        assertThat(found.getMeter().getSerialNumber(), is(SERIAL_NUMBER_274));
     }
 }

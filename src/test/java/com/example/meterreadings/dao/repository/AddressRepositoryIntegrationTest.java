@@ -17,6 +17,8 @@ import static org.junit.Assert.assertThat;
 @DataJpaTest
 public class AddressRepositoryIntegrationTest {
 
+    private static final String CITY_SPLIT = "Split";
+
     @Autowired
     private TestEntityManager entityManager;
 
@@ -25,13 +27,7 @@ public class AddressRepositoryIntegrationTest {
 
     @Test
     public void whenFindByCity_thenReturnAddress() {
-        // given
-        String city = "Split";
-
-        // when
-        List<Address> found = addressRepository.findByCity(city);
-
-        // then
-        assertThat(found.stream().allMatch(address -> city.equals(address.getCity())), is(true));
+        List<Address> found = addressRepository.findByCity(CITY_SPLIT);
+        assertThat(found.stream().allMatch(address -> CITY_SPLIT.equals(address.getCity())), is(true));
     }
 }
