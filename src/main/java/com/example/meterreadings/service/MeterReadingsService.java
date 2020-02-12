@@ -13,13 +13,13 @@ import com.example.meterreadings.response.YearlyMeterReadingsResponse;
 
 public interface MeterReadingsService {
 
-    TotalYearlyMeterReadingResponse getTotalReadingForYear(TotalYearlyMeterReadingRequest request)
+    TotalYearlyMeterReadingResponse getTotalYearlyReading(TotalYearlyMeterReadingRequest request)
             throws MeterReadingNotFoundException;
 
-    YearlyMeterReadingsResponse getReadingsForYear(YearlyMeterReadingsRequest request)
+    YearlyMeterReadingsResponse getYearlyReadings(YearlyMeterReadingsRequest request)
             throws MeterReadingNotFoundException;
 
-    MonthlyMeterReadingResponse getReadingForMonth(MonthlyMeterReadingRequest request)
+    MonthlyMeterReadingResponse getMonthlyReading(MonthlyMeterReadingRequest request)
             throws MeterReadingNotFoundException;
 
     AddMonthlyMeterReadingResponse addMonthlyReading(AddMonthlyMeterReadingRequest request)

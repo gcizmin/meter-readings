@@ -1,6 +1,5 @@
 package com.example.meterreadings.controller;
 
-import com.example.meterreadings.helper.RestArgumentChecker;
 import com.example.meterreadings.request.AddMonthlyMeterReadingRequest;
 import com.example.meterreadings.request.MonthlyMeterReadingRequest;
 import com.example.meterreadings.request.TotalYearlyMeterReadingRequest;
@@ -25,7 +24,7 @@ public class MeterReadingsController {
     public TotalYearlyMeterReadingResponse getTotalReadingForYear(@PathVariable("serial_number") String serialNumber,
                                                  @PathVariable("year") int year) {
         RestArgumentChecker.checkYear(year);
-        return meterReadingsService.getTotalReadingForYear(
+        return meterReadingsService.getTotalYearlyReading(
                 TotalYearlyMeterReadingRequest.builder().serialNumber(serialNumber).year(year).build());
     }
 
@@ -33,7 +32,7 @@ public class MeterReadingsController {
     public YearlyMeterReadingsResponse getReadingsForYear(@PathVariable("serial_number") String serialNumber,
                                                           @PathVariable("year") int year) {
         RestArgumentChecker.checkYear(year);
-        return meterReadingsService.getReadingsForYear(YearlyMeterReadingsRequest
+        return meterReadingsService.getYearlyReadings(YearlyMeterReadingsRequest
                 .builder().serialNumber(serialNumber).year(year).build());
     }
 
@@ -43,7 +42,7 @@ public class MeterReadingsController {
                                                                  @PathVariable("month") int month) {
         RestArgumentChecker.checkYear(year);
         RestArgumentChecker.checkMonth(month);
-        return meterReadingsService.getReadingForMonth(MonthlyMeterReadingRequest
+        return meterReadingsService.getMonthlyReading(MonthlyMeterReadingRequest
                 .builder().serialNumber(serialNumber).year(year).month(month).build());
     }
 

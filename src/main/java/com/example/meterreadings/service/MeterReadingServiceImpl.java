@@ -33,11 +33,10 @@ import java.util.stream.Collectors;
 public class MeterReadingServiceImpl implements MeterReadingsService {
 
     private final MeterRepository meterRepository;
-
     private final MeterReadingRepository meterReadingRepository;
 
     @Override
-    public TotalYearlyMeterReadingResponse getTotalReadingForYear(TotalYearlyMeterReadingRequest request) {
+    public TotalYearlyMeterReadingResponse getTotalYearlyReading(TotalYearlyMeterReadingRequest request) {
         Optional<Integer> totalReading =  meterRepository.findTotalReadingBySerialNumberAndYear(
                 request.getSerialNumber(), request.getYear());
         totalReading.orElseThrow(() -> new MeterReadingNotFoundException(request.getSerialNumber(), request.getYear()));
@@ -51,7 +50,7 @@ public class MeterReadingServiceImpl implements MeterReadingsService {
     }
 
     @Override
-    public YearlyMeterReadingsResponse getReadingsForYear(YearlyMeterReadingsRequest request) {
+    public YearlyMeterReadingsResponse getYearlyReadings(YearlyMeterReadingsRequest request) {
         List<MeterReading> meterReadings = meterRepository.findReadingsBySerialNumberAndYear(
                 request.getSerialNumber(), request.getYear());
         if (CollectionUtils.isEmpty(meterReadings))
@@ -67,7 +66,7 @@ public class MeterReadingServiceImpl implements MeterReadingsService {
     }
 
     @Override
-    public MonthlyMeterReadingResponse getReadingForMonth(MonthlyMeterReadingRequest request) {
+    public MonthlyMeterReadingResponse getMonthlyReading(MonthlyMeterReadingRequest request) {
         Optional<Integer> reading = meterRepository.findReadingBySerialNumberAndYearAndMonth(
                 request.getSerialNumber(), request.getYear(), request.getMonth());
         reading.orElseThrow(() -> new MeterReadingNotFoundException(request.getSerialNumber(), request.getMonth(), request.getYear()));
@@ -89,8 +88,8 @@ public class MeterReadingServiceImpl implements MeterReadingsService {
             throw new CannotAddMeterReadingException(request, "Reading for that month already exists");
         MeterReading mr = MeterReadingHelper.populateMeterReading(meter, request);
         meterReadingRepository.save(mr);
-        return AddMonthlyMeterReadingResponse.builder().serialNumber(request.getSerialNumber())
-                .month(request.getMonth()).year(request.getYear()).reading(request.getReading())
+        return AddMonthlyMeterReadingResponse.builder().serialNumber(mr.getMeter().getSerialNumber())
+                .month(mr.getMonth()).year(mr.getYear()).reading(mr.getReading())
                 .statusMessage("Success").build();
     }
 }
