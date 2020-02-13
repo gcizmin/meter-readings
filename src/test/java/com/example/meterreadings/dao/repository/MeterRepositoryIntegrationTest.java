@@ -25,7 +25,6 @@ public class MeterRepositoryIntegrationTest {
     private static final int READING_222 = 222;
     private static final int READING_333 = 333;
 
-
     @Autowired
     private TestEntityManager entityManager;
 

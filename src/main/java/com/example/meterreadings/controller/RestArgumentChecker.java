@@ -14,11 +14,13 @@ public class RestArgumentChecker {
     }
 
     public static void checkMonth(int month) throws BadArgumentException {
-        if (isInvalidMonth(month)) throw new BadArgumentException("Month should be between [1-12]");
+        if (isInvalidMonth(month)) throw new BadArgumentException(
+                String.format("Month should be between [%d-%d]", MIN_MONTH, MAX_MONTH));
     }
 
     public static void checkYear(int year) throws BadArgumentException {
-        if (isInvalidYear(year)) throw new BadArgumentException("Year should be between [1900-3000]");
+        if (isInvalidYear(year)) throw new BadArgumentException(
+                String.format("Year should be between [%d-%d]", MIN_YEAR, MAX_YEAR));
     }
 
     private static boolean isInvalidMonth(int month) {
