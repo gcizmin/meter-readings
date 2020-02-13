@@ -113,3 +113,7 @@ Body:
 ## Security
 
 TBD Not implemented
+
+## Logging configuration
+
+TBD Not implemented
